@@ -67,6 +67,9 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        
+        pg.draw.circle(bd_img, ((tmr % 255), 0, (255 - (tmr % 255))), (10, 10), 10)
         
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]  # 合計移動量
@@ -80,7 +83,7 @@ def main():
         if kk_rct.colliderect(bd_rct) or go_flag == 1:  # 当たる
             if go_flag == 0:
                 go_time = tmr  # ゲームオーバー時のタイムを記録
-            kk_img_res = pg.image.load("ex02/fig/7.png")  # こうかとんのイラストを変える
+            kk_img_res = pg.image.load("ex02/fig/8.png")  # こうかとんのイラストを変える
             kk_img_res = pg.transform.rotozoom(kk_img_res, 0, 2.0)
             go_flag = 1  # ゲームオーバーした印
 
