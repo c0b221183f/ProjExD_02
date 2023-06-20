@@ -68,8 +68,9 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
-        
-        pg.draw.circle(bd_img, ((tmr % 255), 0, (255 - (tmr % 255))), (10, 10), 10)
+        # タイマーの数を255で割ったあまりによって、爆弾の赤と青の色を変化させる
+        pg.draw.circle(bd_img, ((tmr % 255), 0, (255 - (tmr % 255))), (10, 10), 10)  # 追加機能1: 時間の経過とともに色が変化する。
+    
         
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]  # 合計移動量
