@@ -56,8 +56,8 @@ def main():
     # 爆弾Rectの中心座標を乱数で指定する
     bd_rct.center = x, y 
     vx, vy = +5, +5  # 練習２
-    before_angle = 0
-    check_flip = 0
+    before_angle = 0  # 前回の向き
+    check_flip = 0  # 現在の反転状態
 
     clock = pg.time.Clock()
     tmr = 0
@@ -97,6 +97,11 @@ def main():
  
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
+        
+        if tmr <= 2000 and tmr % 200 == 0:
+            vx *= 1.5
+            vy *= 1.5
+
         bd_rct.move_ip(vx, vy)  # 練習２
         yoko, tate = check_bound(bd_rct)
         if not yoko:  # 横方向に画面外だったら
