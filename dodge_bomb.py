@@ -73,7 +73,6 @@ def main():
             kk_img = pg.image.load("ex02/fig/7.png")
             kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
 
-        print(go_flag, tmr)
         if go_flag == 1 and go_time + 200 == tmr:
             print("ゲームオーバー")
             return   # ゲームオーバー 
@@ -116,6 +115,16 @@ def main():
             vx *= -1
         if not tate:  # 縦方向に範囲外だったら
             vy *= -1
+
+        # 爆弾がこうかとんに近づくようにする
+        if random.randint(0, 20) == 0:  # たまに近づく
+            if ( ( kk_rct.left < bd_rct.left and vx > 0 )
+                    or ( kk_rct.left > bd_rct.left and vx < 0)):
+                vx *= -1
+            if ( ( kk_rct.top < bd_rct.top and vy > 0 )
+                    or ( kk_rct.top > bd_rct.top and vy < 0)):
+                vy *= -1
+            
         screen.blit(bd_img, bd_rct)
         pg.display.update()
         tmr += 1
