@@ -58,6 +58,7 @@ def main():
     vx, vy = +5, +5  # 練習２
     before_angle = 0  # 前回の向き
     check_flip = 0  # 現在の反転状態
+    go_flag = 0  # ゲームオーバーになったか
 
     clock = pg.time.Clock()
     tmr = 0
@@ -66,7 +67,14 @@ def main():
             if event.type == pg.QUIT: 
                 return
 
-        if kk_rct.colliderect(bd_rct):  # 練習５
+        if kk_rct.colliderect(bd_rct):  # 当たる
+            go_time = tmr
+            go_flag = 1
+            kk_img = pg.image.load("ex02/fig/7.png")
+            kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+
+        print(go_flag, tmr)
+        if go_flag == 1 and go_time + 200 == tmr:
             print("ゲームオーバー")
             return   # ゲームオーバー 
         
