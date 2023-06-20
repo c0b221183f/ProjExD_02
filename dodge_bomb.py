@@ -11,23 +11,12 @@ delta = {
     pg.K_RIGHT: (+5, 0),
 }
 
-angle = {
-    (0, -5): 270,
-    (5, -5): 225,
-    (5, 0): 180,
-    (5, 5): 135,
-    (0, 5): 90,
-    (-5, 5): 45,
-    (-5, 0): 0,
-    (-5, -5): -45
-}
-
 
 def check_bound(rect: pg.Rect) -> tuple[bool, bool]:
     """
-    こうかとんRect，爆弾Rectが画面外 or 画面内かを判定する関数
-    引数：こうかとんRect or 爆弾Rect
-    戻り値：横方向，縦方向の判定結果タプル（True：画面内／False：画面外）
+    こうかとんRect, 爆弾Rectが画面外 or 画面内かを判定する関数
+    引数: こうかとんRect or 爆弾Rect
+    戻り値: 横方向, 縦方向の判定結果タプル（True: 画面内, False: 画面外）
     """
     yoko, tate = True, True
     if rect.left < 0 or WIDTH < rect.right:  # 横方向判定
@@ -41,12 +30,12 @@ def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
-    kk_img = pg.image.load("ex02/fig/3.png")
+    kk_img = pg.image.load("ex02/fig/3.png")  # こうかとんの画像
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
-    kk_img_reverse = pg.image.load("ex02/fig/3.png")
+    kk_img_reverse = pg.image.load("ex02/fig/3.png")  # こうかとんの画像(反転)
     kk_img_reverse = pg.transform.flip(kk_img_reverse, False, True)
     kk_img_reverse = pg.transform.rotozoom(kk_img_reverse, 0, 2.0)
-    kk_img_lst = {
+    kk_img_lst = {  # 8方向のこうかとんの辞書
         (0, -5): pg.transform.rotozoom(kk_img, -90, 1.0),
         (5, -5): pg.transform.rotozoom(kk_img_reverse, 225, 1.0),
         (5, 0): pg.transform.rotozoom(kk_img_reverse, 180, 1.0),
@@ -85,29 +74,28 @@ def main():
             if key_lst[k]: 
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
-
-        for i, mv in angle.items():
-            kk_img_res = kk_img_lst[tuple(sum_mv)]
+        
+        kk_img_res = kk_img_lst[tuple(sum_mv)]  # 進行方向によって、こうかとんの向きを変える
 
         if kk_rct.colliderect(bd_rct) or go_flag == 1:  # 当たる
             if go_flag == 0:
-                go_time = tmr
-            kk_img_res = pg.image.load("ex02/fig/7.png")
+                go_time = tmr  # ゲームオーバー時のタイムを記録
+            kk_img_res = pg.image.load("ex02/fig/7.png")  # こうかとんのイラストを変える
             kk_img_res = pg.transform.rotozoom(kk_img_res, 0, 2.0)
-            go_flag = 1
+            go_flag = 1  # ゲームオーバーした印
 
-        if go_flag == 1 and go_time + 200 == tmr:
+        if go_flag == 1 and go_time + 200 == tmr:  # ゲームオーバーから数秒後、強制終了する
             print("ゲームオーバー")
             return   # ゲームオーバー 
                 
-        kk_rct.move_ip(sum_mv)
-        if check_bound(kk_rct) != (True, True):
+        kk_rct.move_ip(sum_mv)  # こうかとん移動
+        if check_bound(kk_rct) != (True, True):  # こうかとんが画面外に行った
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
  
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img_res, kk_rct)
         
-        if tmr <= 2000 and tmr % 200 == 0:
+        if tmr <= 2000 and tmr % 200 == 0:  # 定期的に爆弾の速度を早める(2000まで200ごとに作動; 合計10回)
             vx *= 1.5
             vy *= 1.5
 
